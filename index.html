@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>حاسبة شراء المديونية – بنك دبي الإسلامي</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);--bg:#f6f5f1;--card:#fff;--tx:#1d1d1b;--mu:#6b6a64;--ac:#0b6b4f;--bd:#dcdad2;--no:#b3261e;--on:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141513;--card:#1e201d;--tx:#eeede8;--mu:#a3a29a;--ac:#4fc29b;--bd:#34362f;--no:#ff8a80;--on:#0d1f18}}
+:root[data-theme="dark"]{--bg:#141513;--card:#1e201d;--tx:#eeede8;--mu:#a3a29a;--ac:#4fc29b;--bd:#34362f;--no:#ff8a80;--on:#0d1f18}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,"Segoe UI",Arial,sans-serif;line-height:1.7}
+.w{max-width:760px;margin:auto;padding:14px 14px 90px}h1{font-size:18px;margin:4px 0 10px}h2{font-size:15px;margin:0 0 8px;color:var(--ac)}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:13px;margin-bottom:12px}
+label{display:block;font-size:13px;color:var(--mu)}
+input,select{width:100%;box-sizing:border-box;padding:9px;margin-top:3px;border:1px solid var(--bd);border-radius:7px;background:var(--bg);color:var(--tx);font:inherit}
+.k{font-size:13px;color:var(--mu)}.v{font-size:24px;font-weight:700;color:var(--ac)}
+.o{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.sm{font-size:12px;color:var(--mu)}.no{color:var(--no);font-size:14px}
+details{font-size:13px;margin-top:10px}summary{cursor:pointer;color:var(--mu)}
+.chk{display:flex;gap:6px;align-items:center;color:var(--tx);margin-top:22px}.chk input{width:auto;margin:0}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--bd)}
+.bar button{flex:1;padding:10px 4px;border:1px solid var(--ac);border-radius:8px;background:var(--bg);color:var(--ac);font:inherit;font-size:13px;font-weight:700}
+.bar button.on{background:var(--ac);color:var(--on)}
+#pn{position:fixed;inset:0;z-index:10;background:var(--bg);overflow:auto;padding:calc(14px + env(safe-area-inset-top,0px)) 14px 90px;display:none}
+#pn .in{max-width:760px;margin:auto}#pn ul,#pn ol{margin:0;padding-inline-start:22px;font-size:15px}#pn li{margin-bottom:6px}
+.back{width:100%;margin-top:14px;padding:12px;border:0;border-radius:8px;background:var(--ac);color:var(--on);font:inherit;font-weight:700}
+</style></head><body>
+<div class="w">
+<h1>حاسبة شراء المديونية – بنك دبي الإسلامي</h1>
+<div class="c"><div class="g">
+<label>اسم العميل<input id="nm" type="text" autocomplete="off"></label>
+<label>رقم الهاتف<input id="ph" type="tel" inputmode="tel" autocomplete="off"></label></div></div>
+<div class="c"><div class="g">
+<label>نوع العميل<select id="t"><option value="L">مواطن</option><option value="E">مقيم</option></select></label>
+<label>الراتب الأساسي<input id="s" type="number" inputmode="decimal" value="15000"></label>
+<label>المدة (شهر)<input id="m" type="number" inputmode="numeric" value="48"></label>
+<label class="chk"><input id="md" type="checkbox"> وزارة الدفاع</label>
+<label>المديونية<select id="db"><option value="0">عميل فريش (بدون مديونية)</option><option value="1">عليه مديونية في بنك آخر</option></select></label>
+<label id="dl" style="display:none">قيمة المديونية<input id="d" type="number" inputmode="decimal" value="0"></label>
+<label id="al">المبلغ المطلوب (اختياري)<input id="am" type="number" inputmode="decimal"></label></div>
+<details><summary>البدلات والبونص</summary><div class="g" style="margin-top:8px">
+<label>بدل السكن<select id="hp"><option value="Y">سنوي</option><option value="M">شهري</option></select></label>
+<label>قيمة بدل السكن<input id="h" type="number" inputmode="decimal" value="0"></label>
+<label>بدل الطيران (المبلغ)<input id="f" type="number" inputmode="decimal" value="0"></label>
+<label>بدل التعليم (المبلغ)<input id="e" type="number" inputmode="decimal" value="0"></label>
+<label>بونص شهري: قيم آخر 6 شهور متصلة (بمسافة بينها)<input id="bm" type="text" inputmode="decimal" placeholder="2000 3000 1000 4000 2000 2000"></label>
+<label>بونص سنوي: قيم آخر 3 سنوات (بمسافة بينها)<input id="by" type="text" inputmode="decimal" placeholder="24000 30000 18000"></label></div>
+</details></div>
+<div id="out"></div></div>
+<div id="pn"><div class="in" id="pc"></div></div>
+<div class="bar"><button data-p="d">الأوراق المطلوبة</button><button data-p="b">المزايا والعروض</button><button data-p="c">شروط العميل والأسئلة</button></div>
+<script>
+const RT={L:[[5000,8000,10.99,6],[8000,10000,6.99,3.81],[10000,15000,6.99,3.81],[15000,25000,5,2.73],[25000,1e12,4.65,2.54]],
+E:[[5000,8000,12,6.55],[8000,10000,10.25,5.6],[10000,15000,8.99,4.91],[15000,25000,5.75,3.14],[25000,35000,5.75,3.14],[35000,1e12,5.5,3]]};
+const CB={L:[[8000,15000,1500,1000],[15000,35000,2500,2000],[35000,50000,5000,3500],[50000,1e12,6000,5500]],
+E:[[8000,15000,500,500],[15000,35000,1000,1000],[35000,50000,2000,2500],[50000,1e12,2500,3000]]};
+const $=i=>document.getElementById(i),F=x=>Math.round(x).toLocaleString("en-US");
+const nums=s=>(String($(s).value).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/,/g,"").match(/\d+(\.\d+)?/g)||[]).map(Number);
+const N=i=>+$(i).value||0;
+const box=(k,v,n)=>`<div class="c" style="margin:0"><div class="k">${k}</div><div class="v">${v}</div>${n?`<div class="sm">${n}</div>`:""}</div>`;
+function calc(){
+const t=$("t").value,md=$("md").checked,m=N("m"),debt=$("db").value=="1",d=N("d");
+const bm=nums("bm"),by=nums("by"),wr=[];
+const avg=bm.length?bm.reduce((a,b)=>a+b,0)/bm.length:0,low=by.length?Math.min(...by):0;
+if(bm.length&&bm.length!=6)wr.push("البونص الشهري: المطلوب 6 قيم (المكتوب "+bm.length+")");
+if(by.length&&by.length!=3)wr.push("البونص السنوي: المطلوب 3 قيم (المكتوب "+by.length+")");
+const s=N("s")+N("h")/($("hp").value=="M"?1:12)+N("f")/12+N("e")/12+avg*.75+low*.5/12;
+const rt=RT[t].find(r=>s>=r[0]&&s<r[1]),cb=CB[t].find(r=>s>=r[0]&&s<r[1]);
+if(!rt||m<=0){$("out").innerHTML='<div class="c no">الراتب المحتسب ('+F(s)+') أقل من 5,000 أو المدة غير صحيحة – لا توجد شريحة.</div>';return}
+const mx=md?60:48,max=s*(md?15:20),fl=rt[3]/100;
+const grace=t=="L"?(s>=25000?8:6):(s>=10000?4:3);
+const cal=A=>{const p=A*fl*m/12,fee=A<=500000?150:300;return{p,fee,e:(A+p)/m+fee}};
+let h=wr.map(x=>`<div class="c no">${x}</div>`).join("");
+if(m>mx)h+=`<div class="c no">المدة ${m} أكبر من الحد (${mx} شهراً${md?" لوزارة الدفاع":""}).</div>`;
+h+=`<div class="c"><h2>النتيجة${$("nm").value?" – "+$("nm").value.replace(/[<>&]/g,""):""}</h2><div class="sm" style="margin-bottom:8px">الراتب المحتسب: <b>${F(s)}</b> · أقصى قرض (${md?15:20} ضعف): <b>${F(max)}</b>${debt?" · المديونية: <b>"+F(d)+"</b>":""}</div>`;
+const one=(ttl,A)=>{const c=cal(A);return `<div><div class="k" style="margin-bottom:4px">${ttl}</div><div class="o">`+box("قيمة القرض",F(A)+" درهم")+box("القسط الشهري",F(c.e)+" درهم",`شامل ${c.fee} رسوم · على ${m} شهر`)+box("قيمة الربح",F(c.p)+" درهم",`ثابتة ${rt[3]}% · ربح ${rt[2]}%`)+`</div></div>`};
+const tail=`<div class="o" style="margin-top:10px">`+box("الكاش باك",cb?F(cb[2]+cb[3])+" درهم":"لا يوجد",cb?"":"للدخل الأقل من 8,000")+box("فترة السماح",grace+" شهور")+`</div>`;
+if(debt&&d>max)h+=`<div class="no" style="font-size:17px;font-weight:700">❌ مرفوض: المديونية (${F(d)}) أعلى من أقصى قرض (${F(max)})</div></div>`;
+else if(debt){const r=N("am"),ok=r>=d&&r<=max;
+if(r>0&&!ok)h+=`<div class="no" style="margin-bottom:8px">${r<d?"المبلغ المطلوب أقل من المديونية – لازم يغطيها":"المبلغ المطلوب أكبر من أقصى قرض"}</div>`;
+h+=r>0&&ok?`<div class="sm" style="margin-bottom:8px">✅ مسموح</div>`+one("بالمبلغ المطلوب",r)+tail+`</div>`:`<div class="sm" style="margin-bottom:8px">✅ مسموح – العميل يختار أحد الخيارين (أو يكتب مبلغاً بين المديونية والأقصى):</div>`+one("(أ) بأقصى قرض",max)+`<div style="height:10px"></div>`+one("(ب) بقدر المديونية",d)+tail+`</div>`}
+else{const r=N("am");if(r>max)h+=`<div class="no" style="margin-bottom:8px">المبلغ المطلوب أكبر من أقصى قرض – محسوب على الأقصى.</div>`;
+h+=one(r>0&&r<=max?"بالمبلغ المحدد":"أقصى قرض",r>0&&r<=max?r:max)+tail+`</div>`}
+$("out").innerHTML=h}
+const P={d:["الأوراق المطلوبة من العميل",`<ol><li>هوية أصلية مصوّرة بكاميرا الهاتف.</li><li>جواز سفر أصلي مصوّر بكاميرا الهاتف.</li><li>كشف حساب بنكي لآخر 3 شهور (من البنك الذي يتقاضى فيه العميل راتبه).</li><li>شهادة راتب موجّهة إلى «بنك دبي الإسلامي».</li><li>توقيع العميل على أوراق التقديم الخاصة ببنك دبي الإسلامي.</li><li>بيان راتب (Pay Slip) لآخر 3 شهور، إذا لزم الأمر عند وجود فروقات في نزول الراتب.</li></ol>
+<h2 style="margin-top:14px">عند احتساب البدلات</h2><ul><li>كشف حساب بنكي للشهر الذي نزل فيه البدل، مع شهادة الراتب التفصيلية (Pay Slip).</li><li><b>بدل السكن:</b> يُشترط أن ينزل في حساب العميل وليس في حساب مالك السكن.</li><li><b>بدل التعليم:</b> يُشترط خلاصة قيد.</li></ul>`],
+b:["المزايا والعروض من البنك",`<ul><li>سماح: المواطن 8 شهور إذا الراتب 25,000 أو أكثر، و6 شهور إذا أقل. المقيم 4 شهور إذا الراتب 10,000 أو أكثر، و3 شهور إذا أقل.</li><li>فترة سداد تصل إلى 60 شهراً (5 سنوات) لمنسوبي وزارة الدفاع.</li><li>كاش باك حسب الجداول (للمواطن من 2,500 حتى 11,500 درهم).</li><li>بطاقة فيزا مقدّمة مجاناً من البنك دون رسوم.</li><li>رسوم التأمين مجانية.</li><li>تأجيل السداد لمدة شهرين كل سنة.</li><li>توحيد جميع السلفيات في قسط واحد.</li><li>أقل نسبة أرباح بين جميع البنوك.</li><li>أقل نسبة أرباح على التمويل العقاري أو تمويل السيارات.</li><li>خدمة عملاء متميزة (تطبيق – أونلاين).</li><li>عروض حصرية للعملاء.</li></ul>`],
+c:["شروط العميل والأسئلة الأساسية",`<h2>شروط العميل</h2><ul><li>الشركة (جهة العمل) مدرجة (Listed) ومعتمدة لدى البنك.</li><li>التقرير الائتماني لا يقل عن 541 نقطة.</li><li>سن العميل من 21 إلى 65 سنة (للمواطنين).</li><li>الدخل (الراتب) لا يقل عن 5,000 درهم.</li><li>إقامة سارية أو سكن دائم.</li></ul>
+<h2 style="margin-top:14px">أسئلة تهم العميل (يجب طرحها)</h2><ol><li>كم إجمالي الراتب وصافي الراتب؟</li><li>هل عليك أي أقساط (التزامات مالية) أو مصروفات أخرى؟ (تُخصم الأقساط من إجمالي الدخل).</li><li>ما طبيعة العمل؟ (حكومي – قطاع عام – قطاع خاص – أعمال حرة).</li></ol>`]};
+function show(k){const b=document.querySelectorAll(".bar button");
+if($("pn").dataset.k==k){hide();return}
+$("pc").innerHTML=`<div class="c"><h2>${P[k][0]}</h2>${P[k][1]}</div><button class="back" onclick="hide()">← الرجوع للنموذج</button>`;
+$("pn").style.display="block";$("pn").dataset.k=k;$("pn").scrollTop=0;b.forEach(x=>x.classList.toggle("on",x.dataset.p==k))}
+function hide(){$("pn").style.display="none";$("pn").dataset.k="";document.querySelectorAll(".bar button").forEach(x=>x.classList.remove("on"))}
+document.querySelectorAll(".bar button").forEach(b=>b.onclick=()=>show(b.dataset.p));
+document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",calc));
+$("md").addEventListener("change",()=>{$("m").value=$("md").checked?60:48;calc()});
+$("db").addEventListener("change",()=>{const x=$("db").value=="1";$("dl").style.display=x?"":"none";calc()});
+calc();
+</script></body></html>
